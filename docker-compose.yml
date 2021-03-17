@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  mongo:
+    image: "mongo"
+    networks:
+      - local
+  wbm:
+    build: .
+    env_file: .env
+    networks:
+      - local
+networks:
+  local:
