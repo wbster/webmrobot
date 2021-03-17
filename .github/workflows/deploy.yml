@@ -1,0 +1,22 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.my_key }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
+      - run: ssh -i $HOME/.ssh/key -o "StrictHostKeyChecking=no" ${{ secrets.login_host }} "\
+          docker image prune -a -f && \
+          git clone git@github.com:wbster/webmrobot.git && \
+          cd webmrobot && \
+          echo \"token=${{ secrets.token }}\" >> \".env\" && \
+          echo \"mongo_url=mongo:27017/bot\" >> \".env\" && \
+          sudo docker-compose up -d --build --remove-orphan && cd ../ && rm -rf webmrobot"
