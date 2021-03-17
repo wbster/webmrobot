@@ -1,6 +1,5 @@
 import { usersdb } from "./db";
 
-
 export default class Followers {
     getList() {
         return usersdb.find({})

@@ -31,10 +31,11 @@ bot.on('message', (message) => {
 })
 
 const filebase = new FileBase()
+
 setInterval(() => {
     dvach
         .getFiles(1)
-        .then(files => files.filter(({ path }) => /\.(mp4|webm)/i.test(path)))
+        .then(files => files.filter(({ path }) => path.endsWith('.mp4')))
         .then(async list => {
             for (let { path } of list) {
                 const has = await filebase.find(path).then(() => true).catch(() => null)

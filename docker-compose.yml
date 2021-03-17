@@ -5,6 +5,8 @@ services:
     networks:
       - local
   wbm:
+    depends_on:
+      - mongo
     build: .
     env_file: .env
     networks:
